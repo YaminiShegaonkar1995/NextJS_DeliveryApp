@@ -10,6 +10,16 @@ export async function GET(){
     return NextResponse.json({result:true})
 }
 
-export async function POST(){
-    return NextResponse.json({result:true})
+export async function POST(request){
+    let payload = await request.json();
+    let result;
+    await mongoose.connect(connectionStr,{useNewUrlParser:true})
+    if(payload.login){
+        //use this api for login
+        result = await restaurantSchema.findOne({email:payload.email, password:payload.password});
+    }else{
+        const restaurant = new restaurantSchema(payload);
+        result = await restaurant.save();
+    }
+    return NextResponse.json({result,success:true})
 }
