@@ -17,6 +17,27 @@
   text-align: center;
 }
 
+.input_error{
+  position: absolute;
+  padding: 8px;
+  color: red;
+  font-size: 13px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+table td button {
+  margin: 5px;
+}
+
+table img {
+  width: 80px;
+}
+
 .button-link {
   border: 0;
   cursor: pointer;
