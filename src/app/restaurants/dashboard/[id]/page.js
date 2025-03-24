@@ -1,13 +1,15 @@
+'use client'
 import { useState } from "react";
 
-const AddFoodItem = (props) => {
+const EditFoodItem = (props) => {
+    console.log(props.params.id);
     const[name, setName] = useState("");
     const[price, setPrice] = useState("");
     const[path, setPath] = useState("");
     const[description, setDescription] = useState("");
     const[error, setError] = useState(false);
 
-    const handleAddFoodItem = async() => {
+    const handleEditFoodItem = async() => {
         console.log(name, price, path, description);
         if(!name || !price || !path || !description){
             setError(true);
@@ -16,35 +18,12 @@ const AddFoodItem = (props) => {
         else{
             setError(false);
         }
-        let restro_id;
-        const restaurantData = JSON.parse(localStorage.getItem("restaurantUser"));
-        if(restaurantData){
-            restro_id = restaurantData._id;
-        }
-        let response = await fetch("http://localhost:3030/api/restaurant/foods",{
-            method: "POST",
-            body: JSON.stringify({
-                name,
-                price,
-                path,
-                description,
-                restro_id,
-            })
-        });
-        response = await response.json();
-        if(response.success){
-            alert("Food Item Added Successfully");
-            props.setAddItem(false);
-        }
-        else{
-            alert("Food Item not Added Successfully");
-        }
     }
 
     return(
         <>
         <div className="container">
-        <h1>food items</h1>
+        <h1>update food items</h1>
         <div className="input-wrapper">
                     <input value={name} type="text" placeholder="Please enter Food name..... " className="input-field" onChange={(e)=>setName(e.target.value)} />
         </div>
@@ -70,10 +49,13 @@ const AddFoodItem = (props) => {
             error && !description && <span className="input_error">Please Enter Valid Description....</span>
         }
         <div className="input-wrapper">
-                    <button className="button" onClick={handleAddFoodItem}>Add Food Items</button>
+                    <button className="button" onClick={handleEditFoodItem}>update Food Items</button>
+        </div>
+        <div className="input-wrapper">
+                    <button className="button" onClick={()=>router.push('../dashboard')}>Back to Food Items List</button>
         </div>
         </div>
         </>
     )
 }
-export default AddFoodItem;
+export default EditFoodItem;

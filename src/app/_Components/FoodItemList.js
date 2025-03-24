@@ -1,8 +1,10 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const FoodItemList = () => {
 
     const[foodItems, setFoodItems] = useState();
+    const router = useRouter();
 
 const useEffect = (()=> {
     LoadFoodItems();
@@ -17,6 +19,18 @@ const LoadFoodItems = async() => {
         setFoodItems(response.result);
     }else{
         alert("NO Food ITEMS FOUND");
+    }
+}
+
+const deleteFoodItem = async(id) => {
+    let response = await fetch("http://localhost:3030/api/restaurant/foods/"+id, {
+        method: "DELETE"
+    });
+    response = await response.json();
+    if(response.success){
+        LoadFoodItems();
+    }else{
+        alert("Food Item not Deleted");
     }
 }
     return(
@@ -42,7 +56,8 @@ const LoadFoodItems = async() => {
                     <td>{item.price}</td>
                     <td>{item.description}</td>
                     <td><img src={item.img_path} /></td>
-                    <td><button>Delete</button><button>Edit</button></td>
+                    <td><button onClick={()=>deleteFoodItem(item._id)}></button></td>
+                    <td><button onClick={()=>router.push('dashboard/'+item._id)}>Delete</button><button>Edit</button></td>
                 </tr>
                     })
                 }
